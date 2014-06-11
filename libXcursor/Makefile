@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXcursor.so.6.0~ libXcursor.so.6.0
 	ln -s libXcursor.so.6.0 libXcursor.so.6
 	ln -s libXcursor.so.6.0 libXcursor.so
+else
+	ar cr libXcursor.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXcursor.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libXcursor.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXcursor.a
+	cp -af libXcursor.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xcursor.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xcursor.pc

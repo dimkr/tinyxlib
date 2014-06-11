@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXext.so.6.5~ libXext.so.6.5
 	ln -s libXext.so.6.5 libXext.so.6
 	ln -s libXext.so.6.5 libXext.so
+else
+	ar cr libXext.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXext.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libXext.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXext.a
+	cp -af libXext.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xext.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xext.pc

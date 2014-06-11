@@ -14,10 +14,12 @@ ifeq ($(STATIC),0)
 	mv -f libICE.so.6.3~ libICE.so.6.3
 	ln -s libICE.so.6.3 libICE.so.6
 	ln -s libICE.so.6.3 libICE.so
+else
+	ar cr libICE.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -25,7 +27,7 @@ ifeq ($(STATIC),0)
 	cp -af libICE.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libICE.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libICE.a
+	cp -af libICE.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/ice.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/ice.pc

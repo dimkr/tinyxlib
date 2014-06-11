@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXi.so.6.0~ libXi.so.6.0
 	ln -s libXi.so.6.0 libXi.so.6
 	ln -s libXi.so.6.0 libXi.so
+else
+	ar cr libXi.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXi.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libXi.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXi.a
+	cp -af libXi.a $(DESTDIR)/$(LIBDIR)
 endif
 
 depend:

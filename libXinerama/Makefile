@@ -14,10 +14,12 @@ ifeq ($(STATIC),0)
 	mv -f libXinerama.so.1.0~ libXinerama.so.1.0
 	ln -s libXinerama.so.1.0 libXinerama.so.1
 	ln -s libXinerama.so.1.0 libXinerama.so
+else
+	ar cr libXinerama.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -25,7 +27,7 @@ ifeq ($(STATIC),0)
 	cp -af libXinerama.so.1 $(DESTDIR)/$(LIBDIR)
 	cp -af libXinerama.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXinerama.a
+	cp -af libXinerama.a $(DESTDIR)/$(LIBDIR)
 endif
 
 depend:

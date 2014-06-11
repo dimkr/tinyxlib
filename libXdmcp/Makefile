@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXdmcp.so.6.0~ libXdmcp.so.6.0
 	ln -s libXdmcp.so.6.0 libXdmcp.so.6
 	ln -s libXdmcp.so.6.0 libXdmcp.so
+else
+	ar cr libXdmcp.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXdmcp.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libXdmcp.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXdmcp.a
+	cp -af libXdmcp.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xdmcp.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xdmcp.pc

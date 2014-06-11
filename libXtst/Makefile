@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXtst.so.6.1~ libXtst.so.6.1
 	ln -s libXtst.so.6.1 libXtst.so.6
 	ln -s libXtst.so.6.1 libXtst.so
+else
+	ar cr libXtst.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXtst.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libXtst.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXtst.a
+	cp -af libXtst.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xtst.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xtst.pc

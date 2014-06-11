@@ -14,10 +14,12 @@ ifeq ($(STATIC),0)
 	mv -f libXv.so.1.0~ libXv.so.1.0
 	ln -s libXv.so.1.0 libXv.so.1
 	ln -s libXv.so.1.0 libXv.so
+else
+	ar cr libXv.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -25,7 +27,7 @@ ifeq ($(STATIC),0)
 	cp -af libXv.so.1 $(DESTDIR)/$(LIBDIR)
 	cp -af libXv.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXv.a
+	cp -af libXv.a $(DESTDIR)/$(LIBDIR)
 endif
 
 depend:

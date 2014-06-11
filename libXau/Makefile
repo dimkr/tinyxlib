@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXau.so.6.0~ libXau.so.6.0
 	ln -s libXau.so.6.0 libXau.so.6
 	ln -s libXau.so.6.0 libXau.so
+else
+	ar cr libXau.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXau.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libXau.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXau.a
+	cp -af libXau.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xau.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xau.pc

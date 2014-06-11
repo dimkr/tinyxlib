@@ -14,10 +14,12 @@ ifeq ($(STATIC),0)
 	mv -f libXss.so.1.0~ libXss.so.1.0
 	ln -s libXss.so.1.0 libXss.so.1
 	ln -s libXss.so.1.0 libXss.so
+else
+	ar cr libXss.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -25,7 +27,7 @@ ifeq ($(STATIC),0)
 	cp -af libXss.so.1 $(DESTDIR)/$(LIBDIR)
 	cp -af libXss.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXss.a
+	cp -af libXss.a $(DESTDIR)/$(LIBDIR)
 endif
 
 depend:

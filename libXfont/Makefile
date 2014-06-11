@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXfont.so.6.0~ libXfont.so.6.0
 	ln -s libXfont.so.6.0 libXfont.so.6
 	ln -s libXfont.so.6.0 libXfont.so
+else
+	ar cr libXfont.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f bitmap/*.o fontfile/*.o fontcache/*.o fc/*.o  util/*.o stubs/*.o *.so*
+	rm -f bitmap/*.o fontfile/*.o fontcache/*.o fc/*.o  util/*.o stubs/*.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXfont.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libXfont.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXfont.a
+	cp -af libXfont.a $(DESTDIR)/$(LIBDIR)
 endif
 
 depend:

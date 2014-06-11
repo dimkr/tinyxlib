@@ -11,10 +11,12 @@ ifeq ($(STATIC),0)
 	mv -f libXpm.so.1.0~ libXpm.so.1.0
 	ln -s libXpm.so.1.0 libXpm.so.1
 	ln -s libXpm.so.1.0 libXpm.so
+else
+	ar cr libXpm.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -22,7 +24,7 @@ ifeq ($(STATIC),0)
 	cp -af libXpm.so.1 $(DESTDIR)/$(LIBDIR)
 	cp -af libXpm.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXpm.a
+	cp -af libXpm.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xpm.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xpm.pc

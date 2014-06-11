@@ -21,11 +21,8 @@ all:
 	cd libXss; make
 	cd libXfixes; make
 	cd libXcursor; make
-ifeq ($(STATIC),1)
-	ar cr libX11.a `find -name '*.o'`
-endif
+
 clean:
-	rm -f libX11.a
 	cd libtinyX11; make clean
 	cd libICE; make clean
 	cd libSM; make clean
@@ -48,9 +45,6 @@ clean:
 	cd libXcursor; make clean
 install:
 	mkdir -p $(DESTDIR)/$(LIBDIR)/pkgconfig $(DESTDIR)/$(INCDIR)
-ifeq ($(STATIC),1)
-	install -m 644 libX11.a $(DESTDIR)/$(LIBDIR)/libX11.a
-endif
 	cd libXau; make install
 	cd libtinyX11; make install
 	cd libICE; make install

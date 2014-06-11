@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXmuu.so.1.0~ libXmuu.so.1.0
 	ln -s libXmuu.so.1.0 libXmuu.so.1
 	ln -s libXmuu.so.1.0 libXmuu.so
+else
+	ar cr libXmuu.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXmuu.so.1 $(DESTDIR)/$(LIBDIR)
 	cp -af libXmuu.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXmuu.a
+	cp -af libXmuu.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xmuu.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xmuu.pc

@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXaw.so.7.1~ libXaw.so.7.1
 	ln -s libXaw.so.7.1 libXaw.so.7
 	ln -s libXaw.so.7.1 libXaw.so
+else
+	ar cr libXaw.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o .*.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXaw.so.7 $(DESTDIR)/$(LIBDIR)
 	cp -af libXaw.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXaw.a
+	cp -af libXaw.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xaw7.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xaw7.pc

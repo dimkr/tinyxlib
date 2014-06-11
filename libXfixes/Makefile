@@ -12,10 +12,12 @@ ifeq ($(STATIC),0)
 	mv -f libXfixes.so.3.0~ libXfixes.so.3.0
 	ln -s libXfixes.so.3.0 libXfixes.so.3
 	ln -s libXfixes.so.3.0 libXfixes.so
+else
+	ar cr libXfixes.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -23,7 +25,7 @@ ifeq ($(STATIC),0)
 	cp -af libXfixes.so.3 $(DESTDIR)/$(LIBDIR)
 	cp -af libXfixes.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXfixes.a
+	cp -af libXfixes.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xfixes.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xfixes.pc

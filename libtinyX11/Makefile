@@ -17,6 +17,8 @@ ifeq ($(STATIC),0)
 	mv -f libX11.so.6.2~ libX11.so.6.2
 	ln -s libX11.so.6.2 libX11.so.6
 	ln -s libX11.so.6.2 libX11.so
+else
+	ar cr libX11.a $(OBJS:.c=.o) $(XAUOBJS:.c=.o)
 endif
 
 #KeysymStr.o:	KeysymStr.c ks_tables.h
@@ -29,7 +31,7 @@ transport.o:	transport.c xtrans/Xtranssock.c
 	$(CC) -c $(CFLAGS) transport.c
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 #rm -f makekeys
 
 install:
@@ -37,6 +39,8 @@ ifeq ($(STATIC),0)
 	cp -af libX11.so.6.2 $(DESTDIR)/$(LIBDIR)
 	cp -af libX11.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libX11.so $(DESTDIR)/$(LIBDIR)
+else
+	cp -af libX11.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/x11.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/x11.pc

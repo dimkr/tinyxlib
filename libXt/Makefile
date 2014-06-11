@@ -14,10 +14,12 @@ ifeq ($(STATIC),0)
 	mv -f libXt.so.6.1~ libXt.so.6.1
 	ln -s libXt.so.6.1 libXt.so.6
 	ln -s libXt.so.6.1 libXt.so
+else
+	ar cr libXt.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -25,7 +27,7 @@ ifeq ($(STATIC),0)
 	cp -af libXt.so.6 $(DESTDIR)/$(LIBDIR)
 	cp -af libXt.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXt.a
+	cp -af libXt.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xt.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xt.pc

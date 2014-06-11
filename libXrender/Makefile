@@ -13,10 +13,12 @@ ifeq ($(STATIC),0)
 	mv -f libXrender.so.1.1~ libXrender.so.1.1
 	ln -s libXrender.so.1.1 libXrender.so.1
 	ln -s libXrender.so.1.1 libXrender.so
+else
+	ar cr libXrender.a $(OBJS:.c=.o)
 endif
 
 clean:
-	rm -f *.o *.so*
+	rm -f *.o *.a *.so*
 
 install:
 ifeq ($(STATIC),0)
@@ -24,7 +26,7 @@ ifeq ($(STATIC),0)
 	cp -af libXrender.so.1 $(DESTDIR)/$(LIBDIR)
 	cp -af libXrender.so $(DESTDIR)/$(LIBDIR)
 else
-	ln -s libX11.a $(DESTDIR)/$(LIBDIR)/libXrender.a
+	cp -af libXrender.a $(DESTDIR)/$(LIBDIR)
 endif
 	@echo "prefix=$(PREFIX)" > $(DESTDIR)/$(LIBDIR)/pkgconfig/xrender.pc
 	@echo "exec_prefix=$(BINDIR)" >> $(DESTDIR)/$(LIBDIR)/pkgconfig/xrender.pc
