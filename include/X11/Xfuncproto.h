@@ -75,4 +75,11 @@ in this Software without prior written authorization from The Open Group.
 #endif
 #endif /* _XFUNCPROTOBEGIN */
 
+/* Added in X11R6.9, so available in any version of modular xproto */
+#if defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 203)
+# define _X_ATTRIBUTE_PRINTF(x,y) __attribute__((__format__(__printf__,x,y)))
+#else /* not gcc >= 2.3 */
+# define _X_ATTRIBUTE_PRINTF(x,y)
+#endif
+
 #endif /* _XFUNCPROTO_H_ */
