@@ -1657,7 +1657,9 @@ TRANS(SocketUNIXConnect) (XtransConnInfo ciptr, char *host, char *port)
 	     * should try again.
 	     */
 
-	    if (olderrno == ENOENT || olderrno == EINTR)
+	    if (olderrno == ENOENT)
+		return TRANS_CONNECT_FAILED;
+	    else if (olderrno == EINTR)
 		return TRANS_TRY_CONNECT_AGAIN;
 	    else if (olderrno == EWOULDBLOCK || olderrno == EINPROGRESS)
 		return TRANS_IN_PROGRESS;
