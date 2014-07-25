@@ -44,7 +44,7 @@ clean:
 	cd libXfixes; make clean
 	cd libXcursor; make clean
 install:
-	mkdir -p $(DESTDIR)/$(LIBDIR)/pkgconfig $(DESTDIR)/$(INCDIR)
+	mkdir -p $(DESTDIR)/$(LIBDIR)/pkgconfig $(DESTDIR)/$(INCDIR) $(DESTDIR)/$(DATADIR)/X11
 	cd libXau; make install
 	cd libtinyX11; make install
 	cd libICE; make install
